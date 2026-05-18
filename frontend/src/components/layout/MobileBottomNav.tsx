@@ -15,7 +15,7 @@ export const MobileBottomNav = () => {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
       <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-xl border-t border-zinc-900" />
       
       <nav className="relative flex justify-around items-center h-20 pb-4 px-6">

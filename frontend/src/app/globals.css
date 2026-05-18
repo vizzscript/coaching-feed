@@ -35,10 +35,28 @@
     font-family: Arial, Helvetica, sans-serif;
   }
 
-  /* Hide scrollbar for clean app-like feel */
-  ::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+  /* Elegant slim scrollbar on desktop, hidden on mobile */
+  @media (min-width: 768px) {
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a; /* zinc-800 */
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f3f46; /* zinc-700 */
+    }
+  }
+  @media (max-width: 767px) {
+    ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
   }
 }
 

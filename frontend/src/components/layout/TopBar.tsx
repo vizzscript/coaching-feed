@@ -7,7 +7,7 @@ export const TopBar = () => {
   const pathname = usePathname();
   
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 sm:absolute flex justify-center pointer-events-none">
+    <header className="fixed top-0 left-0 right-0 z-40 md:hidden flex justify-center pointer-events-none">
       <div className="w-full max-w-[600px] flex justify-between items-center h-20 px-6 bg-gradient-to-b from-[#09090b] to-transparent pointer-events-auto">
         <h1 className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-zinc-100 to-zinc-500">
           {pathname === '/admin' ? 'Studio' : 'Live Feed'}
