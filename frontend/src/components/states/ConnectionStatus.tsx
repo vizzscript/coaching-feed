@@ -1,7 +1,7 @@
 'use client';
 
 import { useSocket } from '@/hooks/useSocket';
-import { Wifi, WifiOff, Loader2 } from 'lucide-react';
+import { WifiOff, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
@@ -20,9 +20,10 @@ export const ConnectionStatus = () => {
     socket.on('disconnect', onDisconnect);
     socket.on('connect_error', onConnectError);
 
-    // Initial state
     if (socket.connected) {
-      setStatus('connected');
+      queueMicrotask(() => {
+        setStatus('connected');
+      });
     }
 
     return () => {

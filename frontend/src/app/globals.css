@@ -32,6 +32,7 @@
   
   body {
     @apply bg-[#09090b] text-[#fafafa] antialiased selection:bg-zinc-800 selection:text-white;
+    font-family: Arial, Helvetica, sans-serif;
   }
 
   /* Hide scrollbar for clean app-like feel */

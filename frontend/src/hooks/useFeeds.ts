@@ -26,7 +26,9 @@ export const useFeeds = () => {
   }, []);
 
   useEffect(() => {
-    fetchFeeds();
+    queueMicrotask(() => {
+      void fetchFeeds();
+    });
   }, [fetchFeeds]);
 
   useEffect(() => {

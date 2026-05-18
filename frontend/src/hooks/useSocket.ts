@@ -7,12 +7,17 @@ export const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
+    let isActive = true;
     const socketInstance = io(SOCKET_URL, {
       reconnectionAttempts: 5,
       reconnectionDelay: 1000,
     });
 
-    setSocket(socketInstance);
+    queueMicrotask(() => {
+      if (isActive) {
+        setSocket(socketInstance);
+      }
+    });
 
     socketInstance.on('connect', () => {
       console.log('Connected to socket server:', socketInstance.id);
@@ -23,6 +28,7 @@ export const useSocket = () => {
     });
 
     return () => {
+      isActive = false;
       socketInstance.disconnect();
     };
   }, []);
