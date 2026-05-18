@@ -1,0 +1,169 @@
+{
+  "info": {
+    "name": "Coaching Feed API",
+    "description": "REST API collection for the Real-Time Coaching Feed application.",
+    "_postman_id": "coaching-feed-collection-v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string",
+      "description": "Base URL of the backend server"
+    }
+  ],
+  "item": [
+    {
+      "name": "Feed",
+      "description": "Endpoints for managing the coaching feed.",
+      "item": [
+        {
+          "name": "Get All Feeds",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/feed",
+              "host": ["{{base_url}}"],
+              "path": ["api", "feed"]
+            },
+            "description": "Fetches all coaching feeds. Serves from Redis cache (TTL: 60s) and falls back to MongoDB if cache is unavailable."
+          },
+          "response": [
+            {
+              "name": "Success - Returns Feed List",
+              "status": "OK",
+              "code": 200,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "[\n  {\n    \"_id\": \"665a1234abcd5678ef901234\",\n    \"title\": \"Morning Motivation\",\n    \"description\": \"Start your day with a clear goal and focused mindset.\",\n    \"createdAt\": \"2026-05-18T14:30:00.000Z\",\n    \"updatedAt\": \"2026-05-18T14:30:00.000Z\"\n  }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Create New Feed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Evening Reflection\",\n  \"description\": \"Take 10 minutes before bed to review what you accomplished today and set your intention for tomorrow.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/feed",
+              "host": ["{{base_url}}"],
+              "path": ["api", "feed"]
+            },
+            "description": "Creates a new coaching feed entry. Saves to MongoDB, invalidates the Redis cache, and broadcasts the new feed to all connected Socket.IO clients in realtime."
+          },
+          "response": [
+            {
+              "name": "Success - Feed Created",
+              "status": "Created",
+              "code": 201,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"_id\": \"665a5678abcd1234ef905678\",\n  \"title\": \"Evening Reflection\",\n  \"description\": \"Take 10 minutes before bed to review what you accomplished today and set your intention for tomorrow.\",\n  \"createdAt\": \"2026-05-18T15:00:00.000Z\",\n  \"updatedAt\": \"2026-05-18T15:00:00.000Z\",\n  \"__v\": 0\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Error - Missing Fields",
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"error\": \"Title and description are required\"\n}",
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "name": "Error - Server Error",
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                { "key": "Content-Type", "value": "application/json" }
+              ],
+              "body": "{\n  \"error\": \"Internal Server Error\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "name": "Create Feed - Missing Title (Validation Test)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"This feed has no title and should return a 400 error.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/feed",
+              "host": ["{{base_url}}"],
+              "path": ["api", "feed"]
+            },
+            "description": "Tests the validation logic. Should return 400 Bad Request because 'title' is missing."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Feed - Empty Body (Validation Test)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/feed",
+              "host": ["{{base_url}}"],
+              "path": ["api", "feed"]
+            },
+            "description": "Tests the validation logic with a completely empty body. Should return 400 Bad Request."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

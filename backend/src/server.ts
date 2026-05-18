@@ -12,10 +12,20 @@ dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+].filter((origin): origin is string => Boolean(origin));
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`CORS blocked origin: ${origin}`));
+  },
   methods: ['GET', 'POST'],
 }));
 app.use(helmet());

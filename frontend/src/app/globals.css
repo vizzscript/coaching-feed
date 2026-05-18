@@ -1,26 +1,51 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-background: #09090b; /* zinc-950 */
+  --color-foreground: #fafafa; /* zinc-50 */
+  --color-card: #09090b;
+  --color-card-foreground: #fafafa;
+  --color-popover: #09090b;
+  --color-popover-foreground: #fafafa;
+  --color-primary: #fafafa;
+  --color-primary-foreground: #18181b; /* zinc-900 */
+  --color-secondary: #27272a; /* zinc-800 */
+  --color-secondary-foreground: #fafafa;
+  --color-muted: #27272a;
+  --color-muted-foreground: #a1a1aa; /* zinc-400 */
+  --color-accent: #27272a;
+  --color-accent-foreground: #fafafa;
+  --color-destructive: #7f1d1d; /* red-900 */
+  --color-destructive-foreground: #fafafa;
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-ring: #d4d4d8; /* zinc-300 */
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Enforce soft dark mode globally */
+    color-scheme: dark;
+  }
+  
+  body {
+    @apply bg-[#09090b] text-[#fafafa] antialiased selection:bg-zinc-800 selection:text-white;
+  }
+
+  /* Hide scrollbar for clean app-like feel */
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .glass-panel {
+    @apply bg-zinc-900/50 backdrop-blur-xl border border-zinc-800 shadow-2xl;
+  }
+  .app-shadow {
+    @apply shadow-[0_8px_30px_rgb(0,0,0,0.5)];
+  }
 }
